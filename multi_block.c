@@ -1,3 +1,5 @@
+// command : gcc -o multi_b multi_block.c -lnetfilter_queue
+// sudo ./multi_b "test.gilgil.net" ......
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +13,7 @@
 #include <libnet/libnet-headers.h>
 #include <libnetfilter_queue/libnetfilter_queue.h>
 
-unsigned char * cmp[100];
+unsigned char * cmp[1000];
 
 void dump(unsigned char*buf, int size){
 	int i;
@@ -109,7 +111,7 @@ static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,
 			{				
 				buf = strstr(buf,"Host: ");				
 				
-				printf("\nTHIS IS DATA\n");
+				/*printf("\nTHIS IS DATA\n");
 				i=0;	
 				while(1)
 				{				
@@ -119,7 +121,7 @@ static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,
 						printf("\n");				
 					printf("%02x ", buf[i]);
 					i++;					
-				}	
+				}	*/
 				
 				for(i=0;i<100;i++)
 					if(strstr(buf, cmp[i]) != NULL)
@@ -159,7 +161,7 @@ int main(int argc, char **argv)
 	char buf[4096] __attribute__ ((aligned));
 	
 	
-	for(i=0;i<3;i++)		// i == # of filtering page
+	for(i=0;i<100;i++)		// i == # of filtering page
 	{
 		len = strlen(argv[i+1]);
 		//printf("%d\n",len);		
